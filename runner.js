@@ -145,7 +145,8 @@ module.exports = function ({ file, reporter, timeout, width, height, args }) {
         args = [].concat(args || []).map(arg => '--' + arg);
         !timeout && (timeout = 60000);
 
-        const url = path.resolve(file);
+        // const url = path.resolve(file);
+        const url = file;
 
         const options = {
             ignoreHTTPSErrors: true,
@@ -163,7 +164,8 @@ module.exports = function ({ file, reporter, timeout, width, height, args }) {
                     page.on('pageerror', err => console.error(err));
 
                     return page.evaluateOnNewDocument(initMocha, reporter)
-                        .then(() => page.goto(`file://${url}`))
+                        // .then(() => page.goto(`file://${url}`))
+                        .then(() => page.goto(url))
                         .then(() => page.waitForFunction(() => window.__mochaResult__, { timeout: timeout }))
                         .then(() => page.evaluate(() => window.__mochaResult__))
                         .then(obj => {
